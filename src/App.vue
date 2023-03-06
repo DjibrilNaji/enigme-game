@@ -29,14 +29,15 @@
         Abandonner cette question
         <br />
         <span class="flex justify-center text-sm" v-if="attempt < 3"
-          >Vous ne pouvez pas abandonner pour le moment</span
+          >Vous ne pouvez pas abandonner pour le moment (chaque abandon fait
+          -1)</span
         >
       </button>
 
       <div
         class="bg-green-400 pt-1 rounded-2xl duration-300 ease-linear"
         :style="{
-          width: `${(score / totalQuestions) * 100}%`,
+          width: `${((currentQuestion.id - 1) / totalQuestions) * 100}%`,
         }"
       ></div>
 
@@ -83,7 +84,7 @@
   <main v-else>
     <div class="flex flex-col gap-8 mb-6">
       <p class="flex justify-center text-4xl text-green-500">
-        Score : {{ score }}
+        Score : {{ score }} / {{ totalQuestions }}
       </p>
       <div
         class="bg-green-400 pt-1 rounded-2xl duration-300 ease-linear"
@@ -157,6 +158,7 @@ export default {
 
     getResponse: function () {
       this.abandoned = true;
+      this.score--;
     },
 
     replayGame: function () {
