@@ -17,6 +17,7 @@
 
       <p class="flex justify-center text-4xl text-green-500">
         Question {{ questionNumber }}/{{ totalQuestions }}
+        <span class="text-red-700 ml-20">{{ countDown }}</span>
       </p>
 
       <button
@@ -117,6 +118,7 @@ export default {
       abandoned: false,
       attempt: 0,
       score: 0,
+      countDown: 300,
     };
   },
 
@@ -168,6 +170,20 @@ export default {
         (question) => question.id === this.questionNumber
       );
     },
+
+    countDownTimer() {
+      if (this.countDown > 0) {
+        setTimeout(() => {
+          this.countDown--;
+          this.countDownTimer();
+        }, 1000);
+      } else {
+        this.currentQuestion = !this.currentQuestion;
+      }
+    },
+  },
+  created() {
+    this.countDownTimer();
   },
 };
 </script>
