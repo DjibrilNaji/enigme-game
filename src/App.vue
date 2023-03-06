@@ -21,11 +21,16 @@
 
       <button
         type="button"
-        class="text-lg font-bold text-red-300"
-        @click=""
-        v-if="!reponseCorrect"
+        class="text-lg font-bold text-stone-400 hover:underline disabled:opacity-75 disabled:cursor-not-allowed"
+        @click="getResponse"
+        v-if="!abandoned"
+        :disabled="attempt < 3"
       >
-        Abandonner
+        Abandonner cette question
+        <br />
+        <span class="flex justify-center text-sm" v-if="attempt < 3"
+          >Vous ne pouvez pas abandonner pour le moment</span
+        >
       </button>
 
       <div
@@ -57,8 +62,11 @@
           />
         </div>
 
-        <p class="mb-4" v-if="reponseCorrect">
-          La réponse est : test {{ reponse }}
+        <p class="mb-4" v-if="abandoned">
+          La réponse est :
+          <span class="bg-red-200 p-1 text-black">{{
+            currentQuestion.reponse
+          }}</span>
         </p>
 
         <button
@@ -101,10 +109,12 @@ export default {
     return {
       questions: [],
       questionNumber: 1,
-      totalQuestions: 0,
-      currentQuestion: "",
-      userReponse: "",
+      totalQuestions: null,
+      currentQuestion: null,
+      userReponse: null,
       reponseCorrect: null,
+      abandoned: false,
+      attempt: 0,
       score: 0,
     };
   },
@@ -129,14 +139,24 @@ export default {
       ) {
         this.reponseCorrect = true;
         this.questionNumber++;
-        this.userReponse = "";
         this.currentQuestion = this.questions.find(
           (question) => question.id === this.questionNumber
         );
         this.score++;
+
+        this.userReponse = null;
+        this.abandonner = false;
+
+        this.attempt = 0;
+        this.abandoned = false;
       } else {
         this.reponseCorrect = false;
+        this.attempt++;
       }
+    },
+
+    getResponse: function () {
+      this.abandoned = true;
     },
 
     replayGame: function () {
