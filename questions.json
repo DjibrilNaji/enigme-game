@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "question": "Mon premier est le contraire de « haut ». Mon deuxième est le contraire de « rapide ». Mon troisième est le contraire de « matin ». Mon tout s’accroche aux branches des arbres",
+    "reponse": "balançoire"
+  },
+  {
+    "id": 2,
+    "question": "Mon premier est entre 1 et 3. Mon deuxième est l’inverse de la mort. Mon troisième est l’inverse de flou. Mon tout est un jeu verbal.",
+    "reponse": "devinette"
+  },
+  {
+    "id": 3,
+    "question": "Mon premier est un arbre de la forêt qui possède des feuilles en aiguilles persistantes. Mon deuxième est un récipient servant à transporter des matières.Mon tout est utilisé par les peintres.",
+    "reponse": "pinceau"
+  },
+  {
+    "id": 4,
+    "question": "Mon premier est un animal qui mange des souris. Mon deuxième est un animal qui vit dans les égouts. Mon troisième est un chiffre entre un et cinq. Mon tout est ce que je suis en train de faire.",
+    "reponse": "charade"
+  },
+  {
+    "id": 5,
+    "question": "Mon premier est le contraire de « haut ». Mon deuxième est le contraire de « tard ». Mon tout se déplace sur l’eau",
+    "reponse": "bateau"
+  },
+  {
+    "id": 6,
+    "question": "Mon premier est une note de musique.Mon deuxième n’est pas épais. Mon tout est un animal qui vit dans l’eau",
+    "reponse": "dauphin"
+  },
+  {
+    "id": 7,
+    "question": "Mon premier est le contraire de « dur ». Mon deuxième est une espèce de poisson. Mon tout est un animal.",
+    "reponse": "mouton"
+  },
+  {
+    "id": 8,
+    "question": "Mon premier dure 365 jours. Mon deuxième pond des œufs. Mon tout sert à faire de la lumière",
+    "reponse": "ampoule"
+  },
+  {
+    "id": 9,
+    "question": "Mon premier est le contraire de « froid ». Mon deuxième est le quart de 28. Mon tout est un sous-vêtement.",
+    "reponse": "chaussette"
+  },
+  {
+    "id": 10,
+    "question": "Mon premier sert à faire cuire des aliments. Mon deuxième n’arrive qu’une seule fois dans une vie. Mon tout permet de faire rentrer de la lumière dans une maison.",
+    "reponse": "fenêtre"
+  }
+]
