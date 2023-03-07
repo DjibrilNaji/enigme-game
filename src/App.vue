@@ -1,73 +1,92 @@
-<script setup></script>
+<script setup>
+import { useQuestionStore } from "@/stores/question";
+// for the user experience
+const store = useQuestionStore();
+</script>
 
 <template>
-  <header class="flex justify-center text-4xl mb-5 text-white">
-    <div class="pb-3">Enigmes</div>
-  </header>
-
-  <main v-if="currentQuestion">
-    <div class="flex flex-col gap-8 w-[40vw]">
-      <div
-        v-if="reponseCorrect"
-        class="alert alert-success flex justify-center text-xl p-2"
-        role="alert"
-      >
-        Bravo , continuez !
-      </div>
-
-      <p class="flex justify-center text-4xl text-green-500">
-        Question {{ questionNumber }}/{{ totalQuestions }}
-        <span class="text-red-700 ml-20">{{ countDown }}</span>
-      </p>
-
+  <header class="flex flex-col text-4xl mb-5 text-white">
+    <div class="flex justify-center pb-3">Enigmes</div>
+    <div class="flex justify-center">
       <button
         type="button"
-        class="text-lg font-bold text-stone-400 hover:underline disabled:opacity-75 disabled:cursor-not-allowed"
-        @click="getResponse"
-        v-if="!abandoned"
-        :disabled="attempt < 3"
+        class="flex justify-center mx-20 p-1 w-40 bg-green-100 rounded-md text-lg font-bold text-black"
+        @click="replayGame"
       >
-        Abandonner cette question
-        <br />
-        <span class="flex justify-center text-sm" v-if="attempt < 3"
+        Recommencer
+      </button>
+    </div>
+  </header>
+
+  <main v-if="store.currentQuestion">
+    <div>
+      <span class="flex justify-center">
+        <div
+          v-if="store.reponseCorrect"
+          class="alert alert-success text-xl py-2 px-10"
+          role="alert"
+        >
+          Bravo , continuez !
+        </div>
+      </span>
+      <p class="flex justify-center text-4xl text-green-500">
+        Question {{ store.questionNumber }}/{{ store.totalQuestions }}
+        <span class="text-red-700 ml-20 hidden">{{ store.countDown }}</span>
+      </p>
+
+      <div class="flex flex-col justify-center">
+        <button
+          type="button"
+          class="text-lg m-2 disabled:opacity-75 disabled:cursor-not-allowed hover:underline"
+          @click="getResponse"
+          v-if="!store.abandoned"
+          :disabled="store.attempt < 3"
+        >
+          Abandonner cette question
+        </button>
+
+        <span class="text-xs text-center" v-if="store.attempt < 3"
           >Vous ne pouvez pas abandonner pour le moment (chaque abandon fait
           -1)</span
         >
-      </button>
+      </div>
 
       <div
-        class="bg-green-400 pt-1 rounded-2xl duration-300 ease-linear"
+        class="bg-green-400 pt-1 rounded-2xl duration-300 ease-linear my-4"
         :style="{
-          width: `${((currentQuestion.id - 1) / totalQuestions) * 100}%`,
+          width: `${
+            ((store.currentQuestion.id - 1) / store.totalQuestions) * 100
+          }%`,
         }"
       ></div>
 
-      <p class="flex justify-center text-xl">
-        {{ currentQuestion.question }}
-      </p>
-
-      <div
-        v-if="reponseCorrect == false"
-        class="alert alert-danger flex justify-center text-xl p-2"
-        role="alert"
-      >
-        Mauvaise réponse !
-      </div>
+      <span class="flex justify-center">
+        <p class="text-xl w-[50vw]">
+          {{ store.currentQuestion.question }}
+        </p>
+      </span>
+      <span class="flex justify-center">
+        <div
+          v-if="store.reponseCorrect == false"
+          class="flex justify-center alert alert-danger text-xl py-2 px-4 my-4"
+          role="alert"
+        >
+          Mauvaise réponse !
+        </div>
+      </span>
 
       <form class="flex flex-col items-center" @submit.prevent="checkReponse">
-        <div class="flex">
-          <input
-            type="text"
-            class="rounded-md text-black px-8 py-2 mb-4"
-            placeholder="Réponse"
-            v-model="userReponse"
-          />
-        </div>
+        <input
+          type="text"
+          class="rounded-md text-black px-8 py-2 my-4"
+          placeholder="Réponse"
+          v-model="store.userReponse"
+        />
 
-        <p class="mb-4" v-if="abandoned">
+        <p class="mb-4" v-if="store.abandoned">
           La réponse est :
           <span class="bg-red-200 p-1 text-black">{{
-            currentQuestion.reponse
+            store.currentQuestion.reponse
           }}</span>
         </p>
 
@@ -80,17 +99,47 @@
         </button>
       </form>
     </div>
+
+    <!-- <div class="flex flex-col gap-8 w-[40vw]">
+   
+
+      <form class="flex flex-col items-center" @submit.prevent="checkReponse">
+        <div class="flex">
+          <input
+            type="text"
+            class="rounded-md text-black px-8 py-2 mb-4"
+            placeholder="Réponse"
+            v-model="store.userReponse"
+          />
+        </div>
+
+        <p class="mb-4" v-if="store.abandoned">
+          La réponse est :
+          <span class="bg-red-200 p-1 text-black">{{
+            store.currentQuestion.reponse
+          }}</span>
+        </p>
+
+        <button
+          type="button"
+          class="bg-green-600 rounded-md text-lg font-bold text-white px-10 py-2"
+          @click="checkReponse"
+        >
+          Valider
+        </button>
+      </form>
+    </div> -->
   </main>
 
   <main v-else>
     <div class="flex flex-col gap-8 mb-6">
       <p class="flex justify-center text-4xl text-green-500">
-        Score : {{ score }} / {{ totalQuestions }}
+        Score : {{ store.score }} / {{ store.totalQuestions }}
       </p>
       <div
         class="bg-green-400 pt-1 rounded-2xl duration-300 ease-linear"
         :style="{
-          width: `${(score / totalQuestions) * 100}%`,
+          width: `${(store.score / store.totalQuestions) * 100}%`,
         }"
       ></div>
     </div>
@@ -109,81 +158,109 @@
 export default {
   data() {
     return {
-      questions: [],
-      questionNumber: 1,
-      totalQuestions: null,
-      currentQuestion: null,
-      userReponse: null,
-      reponseCorrect: null,
-      abandoned: false,
-      attempt: 0,
-      score: 0,
       countDown: 300,
     };
   },
 
   async mounted() {
-    const questions = await fetch("/questions.json");
-    const data = await questions.json();
+    const store = useQuestionStore();
 
-    this.questions = data;
-    this.totalQuestions = this.questions.length;
+    store.questions = await fetch("/questions.json");
+    store.data = await store.questions.json();
 
-    this.currentQuestion = this.questions.find(
-      (question) => question.id === this.questionNumber
+    store.questions = store.data;
+
+    store.totalQuestions = store.questions.length;
+
+    // localStorage
+    store.questionNumber =
+      parseInt(localStorage.getItem("questionNumber")) || 2;
+    store.score = parseInt(localStorage.getItem("score")) || 0;
+    store.attempt =
+      parseInt(localStorage.getItem("attempt", store.attempt)) || 0;
+
+    store.currentQuestion = store.questions.find(
+      (question) => question.id === store.questionNumber
     );
+
+    console.log(localStorage);
   },
 
   methods: {
     checkReponse: function () {
+      const store = useQuestionStore();
+
       if (
-        this.userReponse.toLowerCase() ===
-        this.currentQuestion.reponse.toLowerCase()
+        store.userReponse.toLowerCase() ===
+        store.currentQuestion.reponse.toLowerCase()
       ) {
-        this.reponseCorrect = true;
-        this.questionNumber++;
-        this.currentQuestion = this.questions.find(
-          (question) => question.id === this.questionNumber
+        store.reponseCorrect = true;
+
+        store.questionNumber++;
+        localStorage.setItem("questionNumber", store.questionNumber);
+
+        store.score++;
+        localStorage.setItem("score", store.score);
+
+        store.currentQuestion = store.questions.find(
+          (question) => question.id === store.questionNumber
         );
-        this.score++;
 
-        this.userReponse = null;
-        this.abandonner = false;
+        store.userReponse = null;
+        store.abandonner = false;
 
-        this.attempt = 0;
-        this.abandoned = false;
+        store.attempt = 0;
+        store.abandoned = false;
+
+        console.log(localStorage);
       } else {
-        this.reponseCorrect = false;
-        this.attempt++;
+        store.reponseCorrect = false;
+
+        store.attempt++;
+        localStorage.setItem("attempt", store.attempt);
+
+        console.log(localStorage);
       }
     },
 
     getResponse: function () {
-      this.abandoned = true;
-      this.score--;
+      const store = useQuestionStore();
+
+      store.abandoned = true;
+      store.score--;
     },
 
     replayGame: function () {
-      this.reponseCorrect = null;
-      this.questionNumber = 1;
-      this.currentQuestion = this.questions.find(
-        (question) => question.id === this.questionNumber
+      const store = useQuestionStore();
+
+      store.reponseCorrect = null;
+
+      store.questionNumber = 1;
+      localStorage.setItem("questionNumber", 1);
+
+      localStorage.setItem("score", 0);
+      localStorage.setItem("attempt", 0);
+
+      store.currentQuestion = store.questions.find(
+        (question) => question.id === store.questionNumber
       );
+
+      console.log(localStorage);
     },
 
-    countDownTimer() {
-      if (this.countDown > 0) {
-        setTimeout(() => {
-          this.countDown--;
-          this.countDownTimer();
-        }, 1000);
-      } else {
-        this.currentQuestion = !this.currentQuestion;
-      }
-    },
+    // countDownTimer() {
+    //   if (this.countDown > 0) {
+    //     setTimeout(() => {
+    //       this.countDown--;
+    //       this.countDownTimer();
+    //     }, 1000);
+    //   } else {
+    //     store.currentQuestion = !this.currentQuestion;
+    //   }
+    // },
   },
-  created() {
-    this.countDownTimer();
-  },
+  // created() {
+  //   this.countDownTimer();
+  // },
 };
 </script>
