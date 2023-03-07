@@ -99,36 +99,6 @@ const store = useQuestionStore();
         </button>
       </form>
     </div>
-
-    <!-- <div class="flex flex-col gap-8 w-[40vw]">
-   
-
-      <form class="flex flex-col items-center" @submit.prevent="checkReponse">
-        <div class="flex">
-          <input
-            type="text"
-            class="rounded-md text-black px-8 py-2 mb-4"
-            placeholder="Réponse"
-            v-model="store.userReponse"
-          />
-        </div>
-
-        <p class="mb-4" v-if="store.abandoned">
-          La réponse est :
-          <span class="bg-red-200 p-1 text-black">{{
-            store.currentQuestion.reponse
-          }}</span>
-        </p>
-
-        <button
-          type="button"
-          class="bg-green-600 rounded-md text-lg font-bold text-white px-10 py-2"
-          @click="checkReponse"
-        >
-          Valider
-        </button>
-      </form>
-    </div> -->
   </main>
 
   <main v-else>
