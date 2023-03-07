@@ -103,9 +103,25 @@ const store = useQuestionStore();
 
   <main v-else>
     <div class="flex flex-col gap-8 mb-6">
-      <p class="flex justify-center text-4xl text-green-500">
-        Score : {{ store.score }} / {{ store.totalQuestions }}
+      <p
+        class="flex justify-center text-4xl text-green-500"
+        v-if="store.score < 5"
+      >
+        Vous n'avez pas la moyenne ... <br />
+        Score : {{ store.score }} /
+        {{ store.totalQuestions }}
       </p>
+
+      <p
+        class="flex justify-center items-center text-4xl text-green-500"
+        v-else
+      >
+        <span class="mx-4"> Bien joué ! </span>
+        <span class="text-xl text-gray-400">
+          Score : {{ store.score }} / {{ store.totalQuestions }}</span
+        >
+      </p>
+
       <div
         class="bg-green-400 pt-1 rounded-2xl duration-300 ease-linear"
         :style="{
@@ -113,14 +129,6 @@ const store = useQuestionStore();
         }"
       ></div>
     </div>
-
-    <button
-      type="button"
-      class="bg-green-600 rounded-md px-3 py-2 text-lg font-bold text-white mx-32"
-      @click="replayGame"
-    >
-      Recommencer
-    </button>
   </main>
 </template>
 
